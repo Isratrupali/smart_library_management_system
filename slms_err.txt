@@ -1,0 +1,51 @@
+[Database] SQL Error: incomplete input
+[Database] Failed SQL: -- ============================================================
+-- FILE: database/schema.sql
+-- PROJECT: Smart Library Management System (SLMS)
+-- COURSE: CSE327 — Software Engineering
+-- PURPOSE: C
+[Database] SQL Error: near "auto": syntax error
+[Database] Failed SQL: auto-increments with each new user
+    name            TEXT    NOT NULL,                  -- Full name of the user (e.g., "Alice Brown")
+    email           TEXT    NOT NULL UNIQUE,           -- Login
+[Database] SQL Error: near "UNIQUE": syntax error
+[Database] Failed SQL: UNIQUE ensures no duplicate accounts
+    password        TEXT    NOT NULL,                  -- Password (plain text for demo;
+[Database] SQL Error: near "hash": syntax error
+[Database] Failed SQL: hash in production)
+    role            TEXT    NOT NULL DEFAULT 'student',-- Role: 'student', 'librarian', or 'admin'
+    membership      TEXT    NOT NULL DEFAULT 'basic',  -- Membership tier: 'basic
+[Database] SQL Error: near "0": syntax error
+[Database] Failed SQL: 0 means no debt
+    is_suspended    INTEGER NOT NULL DEFAULT 0,        -- 0 = active account, 1 = suspended by admin
+    created_at      TEXT    NOT NULL DEFAULT (datetime('now')) -- Timestamp when ac
+[Database] SQL Error: incomplete input
+[Database] Failed SQL: -- ============================================================
+-- TABLE: books
+-- PURPOSE: The full book catalog — physical books, ebooks, audio.
+-- DESIGN PATTERN: Decorator Pattern layers filters
+[Database] SQL Error: near "must": syntax error
+[Database] Failed SQL: must be unique
+    genre           TEXT    NOT NULL,                  -- Genre category (e.g., "Computer Science", "Fiction")
+    department      TEXT    NOT NULL DEFAULT '',       -- Academic departm
+[Database] SQL Error: incomplete input
+[Database] Failed SQL: -- ============================================================
+-- TABLE: transactions
+-- PURPOSE: Records every borrow and return event.
+--          The Facade Pattern manages the borrow/return workf
+[Database] SQL Error: near "NULL": syntax error
+[Database] Failed SQL: NULL if not yet returned
+    fine            REAL    NOT NULL DEFAULT 0.0,      -- Fine charged on this transaction (overdue fee)
+    status          TEXT    NOT NULL DEFAULT 'active', -- 'active', 'r
+[Database] SQL Error: no such table: main.transactions
+[Database] Failed SQL: -- ============================================================
+-- INDEX: Speed up common queries on the transactions table
+-- ============================================================
+CREATE INDEX
+[Database] SQL Error: no such table: main.transactions
+[Database] Failed SQL: -- Fast lookup: user's active borrows
+CREATE INDEX IF NOT EXISTS idx_tx_book   ON transactions(book_id, status);
+[Database] Query prepare error: no such table: users
+[Database] SQL was: SELECT COUNT(*) AS cnt FROM users
+(2026-05-02 14:51:34) [INFO    ] Crow/master server is running at http://0.0.0.0:8080 using 16 threads
+(2026-05-02 14:51:34) [INFO    ] Call `app.loglevel(crow::LogLevel::Warning)` to hide Info level logs.
