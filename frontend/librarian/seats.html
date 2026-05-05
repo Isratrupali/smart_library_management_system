@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seat management — SmartLibrary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-brand"><a class="navbar-brand" href="/" style="font-size:1.1rem;">📚 SmartLibrary</a><div class="mt-2"><span class="role-badge role-librarian">Librarian</span></div></div>
+  <a href="/librarian/dashboard.html"    class="sidebar-nav-item"><span class="sidebar-icon">🏠</span> Dashboard</a>
+  <a href="/librarian/billing.html"      class="sidebar-nav-item"><span class="sidebar-icon">💳</span> Billing</a>
+  <a href="/librarian/manage-books.html" class="sidebar-nav-item"><span class="sidebar-icon">📚</span> Manage Books</a>
+  <a href="/librarian/borrowing.html"    class="sidebar-nav-item"><span class="sidebar-icon">🔄</span> Borrowing</a>
+  <a href="/librarian/seats.html"       class="sidebar-nav-item active"><span class="sidebar-icon">💺</span> Seats</a>
+  <a href="/librarian/students.html"     class="sidebar-nav-item"><span class="sidebar-icon">👥</span> Students</a>
+  <a href="/librarian/notifications.html"class="sidebar-nav-item"><span class="sidebar-icon">🔔</span> Notifications</a>
+  <div style="position:absolute;bottom:1.5rem;left:0;right:0;padding:0 1rem;">
+    <button onclick="logout()" class="btn-outline-glass w-100" style="font-size:0.85rem;">🚪 Logout</button>
+  </div>
+</div>
+<div class="main-with-sidebar">
+  <div class="page-header page-header-librarian rounded-3 px-4 mb-4">
+    <h2 class="font-display fw-800 mb-0 text-amber">💺 Reading room seats</h2>
+    <p class="text-muted-custom mb-0 mt-1">See availability, who booked each seat, and reserve for any student</p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <div class="glass-card p-4">
+        <h5 class="font-display fw-800 mb-3 text-cyan">Book for a student</h5>
+        <div class="mb-3">
+          <label class="form-label">Date</label>
+          <input type="date" id="lib-seat-date" class="form-control" onchange="loadLibrarianSeatsPage()">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Time slot</label>
+          <select id="lib-seat-timeslot" class="form-select" onchange="loadLibrarianSeatsPage()">
+            <option value="09:00-11:00">09:00 – 11:00</option>
+            <option value="11:00-13:00">11:00 – 13:00</option>
+            <option value="13:00-15:00">13:00 – 15:00</option>
+            <option value="15:00-17:00">15:00 – 17:00</option>
+            <option value="17:00-19:00">17:00 – 19:00</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Room</label>
+          <select id="lib-seat-room" class="form-select" onchange="loadLibrarianSeatsPage()">
+            <option>Reading Room A</option>
+            <option>Reading Room B</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Student</label>
+          <select id="lib-seat-student" class="form-select">
+            <option value="">Loading…</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Select seat</label>
+          <p class="text-muted-custom small mb-2">Green = free · Red = booked (hover for student name)</p>
+          <div class="d-flex flex-wrap gap-2" id="lib-seat-grid"></div>
+        </div>
+        <input type="hidden" id="lib-selected-seat" value="">
+        <button type="button" onclick="libBookSeatForStudent()" class="btn-primary-gradient w-100" style="border:none;">✅ Book seat for student</button>
+        <div id="lib-seat-msg" class="mt-3" style="display:none;"></div>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="glass-card p-4 h-100">
+        <h5 class="font-display fw-800 mb-3">📋 All bookings on this date</h5>
+        <p class="text-muted-custom small mb-3">Every confirmed reservation for the selected day, all rooms and slots.</p>
+        <div id="lib-seat-table-loading" class="spinner"></div>
+        <div id="lib-seat-table-wrap" style="display:none;">
+          <div class="table-responsive">
+            <table class="table-dark-custom">
+              <thead>
+                <tr><th>Time</th><th>Room</th><th>Seat</th><th>Student</th><th>Email</th></tr>
+              </thead>
+              <tbody id="lib-seat-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <p id="lib-seat-table-empty" class="text-muted-custom py-4 text-center" style="display:none;">No seat bookings on this date.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast-container-custom" id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/librarian.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    checkLibrarian();
+    const today = new Date().toISOString().split('T')[0];
+    const d = document.getElementById('lib-seat-date');
+    if (d) { d.min = today; d.value = today; }
+    loadLibrarianSeatStudents();
+    loadLibrarianSeatsPage();
+  });
+</script>
+</body>
+</html>

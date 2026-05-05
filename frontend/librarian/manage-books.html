@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- FILE: frontend/librarian/manage-books.html - Add/Edit/Delete books page -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manage Books — SmartLibrary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-brand"><a class="navbar-brand" href="/" style="font-size:1.1rem;">📚 SmartLibrary</a><div class="mt-2"><span class="role-badge role-librarian">Librarian</span></div></div>
+  <a href="/librarian/dashboard.html"    class="sidebar-nav-item"><span class="sidebar-icon">🏠</span> Dashboard</a>
+  <a href="/librarian/billing.html"      class="sidebar-nav-item"><span class="sidebar-icon">💳</span> Billing</a>
+  <a href="/librarian/manage-books.html" class="sidebar-nav-item active"><span class="sidebar-icon">📚</span> Manage Books</a>
+  <a href="/librarian/borrowing.html"    class="sidebar-nav-item"><span class="sidebar-icon">🔄</span> Borrowing</a>
+  <a href="/librarian/seats.html"        class="sidebar-nav-item"><span class="sidebar-icon">💺</span> Seats</a>
+  <a href="/librarian/students.html"     class="sidebar-nav-item"><span class="sidebar-icon">👥</span> Students</a>
+  <a href="/librarian/notifications.html"class="sidebar-nav-item"><span class="sidebar-icon">🔔</span> Notifications</a>
+  <div style="position:absolute;bottom:1.5rem;left:0;right:0;padding:0 1rem;">
+    <button onclick="logout()" class="btn-outline-glass w-100" style="font-size:0.85rem;">🚪 Logout</button>
+  </div>
+</div>
+<div class="main-with-sidebar">
+  <div class="page-header page-header-librarian rounded-3 px-4 mb-4 d-flex justify-content-between align-items-center">
+    <div><h2 class="font-display fw-800 mb-0 text-amber">📚 Manage Books</h2><p class="text-muted-custom mb-0 mt-1">Add, edit, or delete books from the catalog</p></div>
+    <!-- Button to open Add Book modal -->
+    <button onclick="openAddBookModal()" class="btn-primary-gradient" style="border:none;">+ Add Book</button>
+  </div>
+  <!-- Search bar for the book list -->
+  <div class="glass-card p-3 mb-4">
+    <div class="row g-2">
+      <div class="col-md-6"><input type="text" id="lib-search" class="form-control" placeholder="🔍 Search books..." oninput="loadLibBooks()"></div>
+      <div class="col-md-3">
+        <select id="lib-genre" class="form-select" onchange="loadLibBooks()">
+          <option value="">All Genres</option>
+          <option>Computer Science</option><option>Mathematics</option>
+          <option>Physics</option><option>Literature</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <!-- Books table: populated by loadLibBooks() -->
+  <div class="glass-card p-4">
+    <div id="lib-books-loading" class="spinner"></div>
+    <div style="overflow-x:auto;">
+      <table class="table-dark-custom w-100" id="lib-books-table" style="display:none;">
+        <thead><tr>
+          <th>Title</th><th>Author</th><th>Genre</th><th>Type</th>
+          <th>Copies</th><th>Available</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="lib-books-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT BOOK MODAL -->
+<div class="modal-overlay" id="book-edit-modal">
+  <div class="modal-box">
+    <h5 class="font-display fw-800 mb-4" id="modal-title">Add New Book</h5>
+    <div class="row g-3">
+      <div class="col-12"><label class="form-label">Title *</label><input id="b-title" class="form-control" placeholder="Book title"></div>
+      <div class="col-md-6"><label class="form-label">Author *</label><input id="b-author" class="form-control" placeholder="Author name"></div>
+      <div class="col-md-6"><label class="form-label">ISBN *</label><input id="b-isbn" class="form-control" placeholder="978-xxxxxxxx"></div>
+      <div class="col-md-6"><label class="form-label">Genre</label>
+        <select id="b-genre" class="form-select">
+          <option>Computer Science</option><option>Mathematics</option>
+          <option>Physics</option><option>Literature</option><option>Self-Help</option>
+        </select>
+      </div>
+      <div class="col-md-6"><label class="form-label">Type</label>
+        <select id="b-type" class="form-select" onchange="syncMediaPanels()">
+          <option value="physical">Physical</option>
+          <option value="ebook">E-book</option>
+          <option value="audio">Audio</option>
+        </select>
+      </div>
+      <div class="col-md-4"><label class="form-label">Total Copies</label><input id="b-copies" type="number" class="form-control" value="1" min="1"></div>
+      <div class="col-md-4"><label class="form-label">Year</label><input id="b-year" type="number" class="form-control" value="2024" min="1900" max="2030"></div>
+      <div class="col-md-4"><label class="form-label">Department</label><input id="b-dept" class="form-control" placeholder="e.g., CSE"></div>
+      <div class="col-12"><label class="form-label">Description</label><textarea id="b-desc" class="form-control" rows="3" placeholder="Short description..."></textarea></div>
+      <div class="col-12" id="ebook-upload-panel" style="display:none;">
+        <label class="form-label">E-book files (PDF)</label>
+        <p class="text-muted-custom small mb-2">Add one PDF for a short book, or several for chapters / parts. Upload each file, then <strong>Save book</strong> (new books) or files save automatically when editing.</p>
+        <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+          <input type="file" id="b-ebook-file" class="form-control" style="max-width:320px;" accept=".pdf,application/pdf">
+          <button type="button" onclick="uploadBookMedia('ebook')" class="btn-outline-glass">Add PDF</button>
+        </div>
+        <ul id="ebook-parts-ul" class="list-unstyled small mb-0" style="max-height:140px;overflow-y:auto;"></ul>
+      </div>
+      <div class="col-12" id="audio-upload-panel" style="display:none;">
+        <label class="form-label">Audiobook files</label>
+        <p class="text-muted-custom small mb-2">Multiple tracks for parts or chapters. Same as PDFs — upload each, then save (or auto-saved when editing).</p>
+        <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+          <input type="file" id="b-audio-file" class="form-control" style="max-width:320px;" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac,.webm,.mp4,.mpeg">
+          <button type="button" onclick="uploadBookMedia('audio')" class="btn-outline-glass">Add audio</button>
+        </div>
+        <ul id="audio-parts-ul" class="list-unstyled small mb-0" style="max-height:140px;overflow-y:auto;"></ul>
+      </div>
+    </div>
+    <input type="hidden" id="b-edit-id" value="">
+    <div class="mt-4 d-flex gap-2 justify-content-end">
+      <button onclick="closeBookModal()" class="btn-outline-glass">Cancel</button>
+      <button onclick="saveBook()" class="btn-primary-gradient" style="border:none;">💾 Save Book</button>
+    </div>
+    <div id="book-form-msg" class="mt-3" style="display:none;"></div>
+  </div>
+</div>
+
+<div class="toast-container-custom" id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/librarian.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => { checkLibrarian(); loadLibBooks(); syncMediaPanels(); });</script>
+</body>
+</html>

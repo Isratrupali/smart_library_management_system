@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- FILE: frontend/student/dashboard.html - Student Portal Main Dashboard -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Dashboard — SmartLibrary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- SIDEBAR: Fixed left navigation for the student portal -->
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <a class="navbar-brand" href="/" style="font-size:1.1rem;">📚 SmartLibrary</a>
+    <!-- Role badge shown under brand -->
+    <div class="mt-2"><span class="role-badge role-student">Student</span></div>
+  </div>
+  <!-- Navigation links — each calls a different page -->
+  <a href="/student/dashboard.html"  class="sidebar-nav-item active"><span class="sidebar-icon">🏠</span> Dashboard</a>
+  <a href="/student/catalog.html"    class="sidebar-nav-item"><span class="sidebar-icon">📚</span> Book Catalog</a>
+  <a href="/student/ebooks.html"     class="sidebar-nav-item"><span class="sidebar-icon">📖</span> E-books & Audio</a>
+  <a href="/student/membership.html" class="sidebar-nav-item"><span class="sidebar-icon">⭐</span> Membership</a>
+  <a href="/student/billing.html"    class="sidebar-nav-item"><span class="sidebar-icon">💳</span> Billing</a>
+  <a href="/student/seats.html"      class="sidebar-nav-item"><span class="sidebar-icon">💺</span> Seat Booking</a>
+  <!-- Logout button at bottom -->
+  <div style="position:absolute;bottom:1.5rem;left:0;right:0;padding:0 1rem;">
+    <button onclick="logout()" class="btn-outline-glass w-100" style="font-size:0.85rem;">🚪 Logout</button>
+  </div>
+</div>
+
+<!-- MAIN CONTENT: offset from sidebar -->
+<div class="main-with-sidebar">
+
+  <!-- PAGE HEADER: Colored greeting banner -->
+  <div class="page-header page-header-student rounded-3 px-4 mb-4">
+    <div class="d-flex align-items-center gap-3">
+      <!-- Avatar circle with gradient -->
+      <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#16a34a);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🎓</div>
+      <div>
+        <div class="text-cyan" style="font-size:0.75rem;font-weight:700;letter-spacing:1px;">STUDENT PORTAL</div>
+        <!-- User's name filled in by JavaScript -->
+        <h2 class="font-display fw-800 mb-0" style="font-size:1.8rem;">Hey, <span id="user-name">Student</span>! 👋</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAT CARDS ROW: Shows quick numbers at a glance -->
+  <div class="row row-cols-2 row-cols-md-5 g-3 mb-4">
+    <div class="col">
+      <div class="glass-card glass-card-cyan p-3 text-center stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-value text-cyan" id="stat-borrows">—</div>
+        <div class="stat-label">Books Borrowed</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="glass-card glass-card-amber p-3 text-center stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value text-amber" id="stat-fine">—</div>
+        <div class="stat-label">Fine (BDT)</div>
+      </div>
+    </div>
+    <div class="col">
+      <a href="/student/billing.html" class="text-decoration-none">
+      <div class="glass-card glass-card-purple p-3 text-center stat-card h-100">
+        <div class="stat-icon">💳</div>
+        <div class="stat-value" id="stat-billing-due" style="font-size:1rem;">—</div>
+        <div class="stat-label">Membership due</div>
+      </div>
+      </a>
+    </div>
+    <div class="col">
+      <div class="glass-card p-3 text-center stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value text-purple" id="stat-membership" style="font-size:1.2rem;">—</div>
+        <div class="stat-label">Membership</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="glass-card p-3 text-center stat-card">
+        <div class="stat-icon">🔔</div>
+        <div class="stat-value text-green" id="stat-notifs">—</div>
+        <div class="stat-label">Notifications</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN ROW: Active borrows + Quick actions -->
+  <div class="row g-3 mb-4">
+    <!-- Active Borrows list (left, wider) -->
+    <div class="col-md-8">
+      <div class="glass-card p-4 h-100">
+        <h5 class="font-display fw-800 text-cyan mb-3">📚 My Active Borrows</h5>
+        <!-- Loading spinner shown while data loads -->
+        <div id="borrows-loading" class="spinner"></div>
+        <!-- List populated by JavaScript -->
+        <div id="borrows-list"></div>
+      </div>
+    </div>
+    <!-- Quick Actions panel (right, narrower) -->
+    <div class="col-md-4">
+      <div class="glass-card p-4 h-100 glass-card-cyan">
+        <h6 class="text-cyan mb-3">⚡ Quick Actions</h6>
+        <a href="/student/catalog.html"    class="quick-action"><span class="quick-action-icon">📚</span><span>Browse Books</span></a>
+        <a href="/student/seats.html"      class="quick-action"><span class="quick-action-icon">💺</span><span>Book a Seat</span></a>
+        <a href="/student/ebooks.html"     class="quick-action"><span class="quick-action-icon">📖</span><span>Read E-books</span></a>
+        <a href="/student/membership.html" class="quick-action"><span class="quick-action-icon">⭐</span><span>Upgrade Membership</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS SECTION -->
+  <div class="glass-card p-4 mb-4">
+    <h5 class="font-display fw-800 mb-3">🔔 Recent Notifications</h5>
+    <div id="notifs-list"><div class="spinner"></div></div>
+  </div>
+
+</div><!-- /main-with-sidebar -->
+
+<!-- Toast notification container (top-right corner) -->
+<div class="toast-container-custom" id="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/student.js"></script>
+<script>
+  // Initialize the dashboard when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    checkAuth('student');   // Verify user is logged in as student
+    loadDashboard();        // Fetch and display dashboard data
+  });
+</script>
+</body>
+</html>

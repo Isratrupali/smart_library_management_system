@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- FILE: frontend/student/ebooks.html - Digital library: ebooks and audio books -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>E-books & Audio — SmartLibrary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-brand"><a class="navbar-brand" href="/" style="font-size:1.1rem;">📚 SmartLibrary</a><div class="mt-2"><span class="role-badge role-student">Student</span></div></div>
+  <a href="/student/dashboard.html"  class="sidebar-nav-item"><span class="sidebar-icon">🏠</span> Dashboard</a>
+  <a href="/student/catalog.html"    class="sidebar-nav-item"><span class="sidebar-icon">📚</span> Book Catalog</a>
+  <a href="/student/ebooks.html"     class="sidebar-nav-item active"><span class="sidebar-icon">📖</span> E-books & Audio</a>
+  <a href="/student/membership.html" class="sidebar-nav-item"><span class="sidebar-icon">⭐</span> Membership</a>
+  <a href="/student/billing.html"    class="sidebar-nav-item"><span class="sidebar-icon">💳</span> Billing</a>
+  <a href="/student/seats.html"      class="sidebar-nav-item"><span class="sidebar-icon">💺</span> Seat Booking</a>
+  <div style="position:absolute;bottom:1.5rem;left:0;right:0;padding:0 1rem;">
+    <button onclick="logout()" class="btn-outline-glass w-100" style="font-size:0.85rem;">🚪 Logout</button>
+  </div>
+</div>
+<div class="main-with-sidebar">
+  <div class="page-header page-header-student rounded-3 px-4 mb-4">
+    <h2 class="font-display fw-800 mb-0">📖 E-books & Audio Library</h2>
+    <p class="text-muted-custom mb-0 mt-1">Read digitally or listen to audiobooks anytime</p>
+  </div>
+
+  <!-- Type tabs: filter by ebook or audio -->
+  <div class="d-flex gap-2 mb-4">
+    <button onclick="loadDigital('ebook')" id="btn-ebook" class="btn-primary-gradient" style="border:none;">💻 E-books</button>
+    <button onclick="loadDigital('audio')" id="btn-audio" class="btn-outline-glass">🎧 Audio Books</button>
+  </div>
+
+  <!-- Digital books grid: populated by loadDigital() in student.js -->
+  <div class="row g-3" id="digital-grid">
+    <div class="col-12 text-center py-4"><div class="spinner"></div></div>
+  </div>
+
+</div>
+<div class="toast-container-custom" id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/student.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    checkAuth('student');   // Verify student is logged in
+    loadDigital('ebook');   // Default: show ebooks first
+  });
+</script>
+</body>
+</html>

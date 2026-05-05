@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!-- FILE: frontend/librarian/dashboard.html - Librarian main dashboard -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Librarian Dashboard — SmartLibrary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<!-- Librarian sidebar navigation -->
+<div class="sidebar">
+  <div class="sidebar-brand"><a class="navbar-brand" href="/" style="font-size:1.1rem;">📚 SmartLibrary</a><div class="mt-2"><span class="role-badge role-librarian">Librarian</span></div></div>
+  <a href="/librarian/dashboard.html"    class="sidebar-nav-item active"><span class="sidebar-icon">🏠</span> Dashboard</a>
+  <a href="/librarian/billing.html"      class="sidebar-nav-item"><span class="sidebar-icon">💳</span> Billing</a>
+  <a href="/librarian/manage-books.html" class="sidebar-nav-item"><span class="sidebar-icon">📚</span> Manage Books</a>
+  <a href="/librarian/borrowing.html"    class="sidebar-nav-item"><span class="sidebar-icon">🔄</span> Borrowing</a>
+  <a href="/librarian/seats.html"        class="sidebar-nav-item"><span class="sidebar-icon">💺</span> Seats</a>
+  <a href="/librarian/students.html"     class="sidebar-nav-item"><span class="sidebar-icon">👥</span> Students</a>
+  <a href="/librarian/notifications.html"class="sidebar-nav-item"><span class="sidebar-icon">🔔</span> Send Notifications</a>
+  <div style="position:absolute;bottom:1.5rem;left:0;right:0;padding:0 1rem;">
+    <button onclick="logout()" class="btn-outline-glass w-100" style="font-size:0.85rem;">🚪 Logout</button>
+  </div>
+</div>
+<div class="main-with-sidebar">
+  <div class="page-header page-header-librarian rounded-3 px-4 mb-4">
+    <h2 class="font-display fw-800 mb-0 text-amber">📋 Librarian Dashboard</h2>
+    <p class="text-muted-custom mb-0 mt-1">Overview of library operations</p>
+  </div>
+  <!-- Stats row: fetched from GET /api/librarian/stats -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-2">
+      <div class="glass-card glass-card-cyan p-3 text-center stat-card"><div class="stat-icon">📚</div><div class="stat-value text-cyan" id="stat-books">—</div><div class="stat-label">Total Books</div></div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="glass-card p-3 text-center stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="stat-students">—</div><div class="stat-label">Students</div></div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="glass-card glass-card-green p-3 text-center stat-card"><div class="stat-icon">🔄</div><div class="stat-value text-green" id="stat-active">—</div><div class="stat-label">Active Loans</div></div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="glass-card glass-card-red p-3 text-center stat-card"><div class="stat-icon">⚠️</div><div class="stat-value text-red" id="stat-overdue">—</div><div class="stat-label">Overdue</div></div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="glass-card glass-card-amber p-3 text-center stat-card"><div class="stat-icon">💰</div><div class="stat-value text-amber" id="stat-fines">—</div><div class="stat-label">Fines (BDT)</div></div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="glass-card p-3 text-center stat-card"><div class="stat-icon">📝</div><div class="stat-value" id="stat-requests">—</div><div class="stat-label">Requests</div></div>
+    </div>
+    <div class="col-6 col-md-2">
+      <a href="/librarian/billing.html" class="text-decoration-none">
+      <div class="glass-card glass-card-purple p-3 text-center stat-card h-100">
+        <div class="stat-icon">💳</div>
+        <div class="stat-value text-purple" id="stat-pending-bills">—</div>
+        <div class="stat-label">Due invoices</div>
+      </div>
+      </a>
+    </div>
+  </div>
+  <!-- Quick actions -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="glass-card glass-card-amber p-4">
+        <h6 class="text-amber mb-3">⚡ Quick Actions</h6>
+        <a href="/librarian/manage-books.html" class="quick-action"><span class="quick-action-icon">📚</span> Add / Edit Books</a>
+        <a href="/librarian/borrowing.html"    class="quick-action"><span class="quick-action-icon">🔄</span> View Active Loans</a>
+        <a href="/librarian/students.html"     class="quick-action"><span class="quick-action-icon">👥</span> Manage Students</a>
+        <a href="/librarian/seats.html"        class="quick-action"><span class="quick-action-icon">💺</span> Seat bookings</a>
+        <a href="/librarian/billing.html"      class="quick-action"><span class="quick-action-icon">💳</span> Membership billing</a>
+        <a href="/librarian/notifications.html"class="quick-action"><span class="quick-action-icon">🔔</span> Send Notification</a>
+      </div>
+    </div>
+    <!-- Overdue alert list -->
+    <div class="col-md-8">
+      <div class="glass-card p-4 glass-card-red">
+        <h5 class="font-display fw-800 text-red mb-3">⚠️ Overdue Books</h5>
+        <div id="overdue-list"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast-container-custom" id="toast-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/librarian.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => { checkLibrarian(); loadLibDashboard(); });</script>
+</body>
+</html>

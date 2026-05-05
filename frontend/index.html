@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!-- FILE: frontend/index.html - Landing page for SmartLibrary SLMS -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartLibrary — CSE327 Software Engineering Project</title>
+  <meta name="description" content="Smart Library Management System built with C++ Crow, SQLite, Bootstrap 5 and 6 Design Patterns.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAVBAR: sticky top navigation bar -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/">📚 SmartLibrary</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav me-auto ms-4 gap-1">
+        <li class="nav-item"><a class="nav-link" href="#patterns">Patterns</a></li>
+        <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+        <li class="nav-item"><a class="nav-link" href="#roles">Roles</a></li>
+      </ul>
+      <a href="/auth.html" class="btn-nav-login nav-link">Get Started →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO: main banner section with headline and CTA buttons -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-6">
+        <!-- Badge above headline -->
+        <div class="hero-badge animate-fade-up">✦ CSE327 Software Engineering Project</div>
+        <!-- Main headline with gradient text -->
+        <h1 class="hero-title animate-fade-up delay-100">
+          The <span class="gradient-text">Intelligent</span><br>
+          Library of the <span style="background:linear-gradient(135deg,#2563eb,#16a34a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Future</span>
+        </h1>
+        <!-- Subtitle describing the system -->
+        <p class="hero-subtitle animate-fade-up delay-200">
+          A full-stack C++ Crow web server implementing 6 Gang-of-Four design patterns.
+          Manage books, users, borrows, seats, and notifications — all from your browser.
+        </p>
+        <!-- Call to action buttons -->
+        <div class="d-flex flex-wrap gap-3 animate-fade-up delay-300">
+          <a href="/auth.html" class="btn-primary-gradient">🚀 Launch System</a>
+          <a href="#patterns" class="btn-outline-glass">⚙️ View Patterns</a>
+        </div>
+        <!-- Quick stats below buttons -->
+        <div class="d-flex flex-wrap gap-4 mt-4 animate-fade-up delay-400">
+          <div><span class="font-display fw-800" style="font-size:1.4rem;color:#2563eb;">20+</span><br><small class="text-muted-custom">Books</small></div>
+          <div><span class="font-display fw-800" style="font-size:1.4rem;color:#16a34a;">6</span><br><small class="text-muted-custom">Design Patterns</small></div>
+          <div><span class="font-display fw-800" style="font-size:1.4rem;color:#ea580c;">3</span><br><small class="text-muted-custom">User Roles</small></div>
+          <div><span class="font-display fw-800" style="font-size:1.4rem;color:#0891b2;">REST</span><br><small class="text-muted-custom">API</small></div>
+        </div>
+      </div>
+      <!-- Right side: decorative book preview card -->
+      <div class="col-lg-6 d-none d-lg-block animate-fade-in delay-200">
+        <div class="glass-card glass-card-purple p-4">
+          <!-- Fake browser bar dots for aesthetics -->
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div style="width:10px;height:10px;border-radius:50%;background:#2563eb;"></div>
+            <div style="width:10px;height:10px;border-radius:50%;background:#ea580c;"></div>
+            <div style="width:10px;height:10px;border-radius:50%;background:#16a34a;"></div>
+            <span class="text-muted-custom ms-2" style="font-size:0.72rem;">smartlibrary / books</span>
+          </div>
+          <!-- Sample book catalog items -->
+          <div class="row g-2 mb-3">
+            <div class="col-6"><div class="glass-card glass-card-cyan p-2"><div style="font-size:0.72rem;color:#1d4ed8;font-weight:600;">📗 Clean Code</div><div style="font-size:0.65rem;color:#64748b;">Robert C. Martin</div><div style="font-size:0.65rem;color:#15803d;margin-top:4px;">✓ Available (3)</div></div></div>
+            <div class="col-6"><div class="glass-card glass-card-red p-2"><div style="font-size:0.72rem;color:#c2410c;font-weight:600;">📘 Design Patterns</div><div style="font-size:0.65rem;color:#64748b;">Gang of Four</div><div style="font-size:0.65rem;color:#dc2626;margin-top:4px;">✗ Unavailable</div></div></div>
+            <div class="col-6"><div class="glass-card glass-card-amber p-2"><div style="font-size:0.72rem;color:#ea580c;font-weight:600;">🎧 AI Basics</div><div style="font-size:0.65rem;color:#64748b;">Russell & Norvig</div><div style="font-size:0.65rem;color:#2563eb;margin-top:4px;">🎧 Audio Book</div></div></div>
+            <div class="col-6"><div class="glass-card glass-card-green p-2"><div style="font-size:0.72rem;color:#166534;font-weight:600;">📱 Python Crash</div><div style="font-size:0.65rem;color:#64748b;">Eric Matthes</div><div style="font-size:0.65rem;color:#15803d;margin-top:4px;">✓ Available (4)</div></div></div>
+          </div>
+          <!-- Observer notification indicator -->
+          <div style="background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.25);border-radius:8px;padding:10px;">
+            <span style="font-size:0.7rem;color:#166534;">👁️ Observer: Waitlist notified ✓</span>
+            <span class="float-end" style="font-size:0.7rem;color:#15803d;">2 users notified</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- DESIGN PATTERNS SECTION: Cards explaining each pattern -->
+<section id="patterns" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-tag">⚙️ Architecture</div>
+      <h2 class="font-display fw-800" style="font-size:2.4rem;">6 Design Patterns</h2>
+      <p class="text-muted-custom mt-2">Every core operation is powered by a Gang-of-Four design pattern.</p>
+    </div>
+    <div class="row g-4">
+      <!-- Singleton -->
+      <div class="col-md-4"><div class="glass-card glass-card-purple p-4 h-100 animate-fade-up"><div style="font-size:2rem;mb:1rem;">🔒</div><div class="gradient-text font-display fw-800 mb-2 mt-2">Singleton</div><p style="color:#64748b;font-size:0.875rem;">One shared SQLite connection for the entire app — prevents duplicate connections.</p><code style="color:#2563eb;font-size:0.72rem;">Database::getInstance()</code></div></div>
+      <!-- Factory -->
+      <div class="col-md-4"><div class="glass-card glass-card-amber p-4 h-100 animate-fade-up delay-100"><div style="font-size:2rem;mb:1rem;">🏭</div><div class="gradient-text-warm font-display fw-800 mb-2 mt-2">Factory</div><p style="color:#64748b;font-size:0.875rem;">Creates Student, Librarian, or Admin user objects with different permissions and limits.</p><code style="color:#ea580c;font-size:0.72rem;">UserFactory::create(role)</code></div></div>
+      <!-- Strategy -->
+      <div class="col-md-4"><div class="glass-card glass-card-cyan p-4 h-100 animate-fade-up delay-200"><div style="font-size:2rem;mb:1rem;">⚡</div><div class="gradient-text font-display fw-800 mb-2 mt-2">Strategy</div><p style="color:#64748b;font-size:0.875rem;">Swap book sort algorithms at runtime: by title, author, year, or popularity.</p><code style="color:#1d4ed8;font-size:0.72rem;">BookSorter::setStrategy(sort)</code></div></div>
+      <!-- Decorator -->
+      <div class="col-md-4"><div class="glass-card glass-card-green p-4 h-100 animate-fade-up delay-300"><div style="font-size:2rem;mb:1rem;">🎨</div><div style="background:linear-gradient(135deg,#16a34a,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;" class="font-display fw-800 mb-2 mt-2">Decorator</div><p style="color:#64748b;font-size:0.875rem;">Layer search filters independently: keyword + genre + availability + type.</p><code style="color:#15803d;font-size:0.72rem;">SearchFilterBuilder().build()</code></div></div>
+      <!-- Observer -->
+      <div class="col-md-4"><div class="glass-card p-4 h-100 animate-fade-up delay-400" style="border-color:rgba(37,99,235,0.3);"><div style="font-size:2rem;mb:1rem;">👁️</div><div class="gradient-text font-display fw-800 mb-2 mt-2">Observer</div><p style="color:#64748b;font-size:0.875rem;">Auto-notifies waitlisted users the moment a returned book becomes available.</p><code style="color:#1d4ed8;font-size:0.72rem;">WaitlistNotifier::notifyWaitlist()</code></div></div>
+      <!-- Command -->
+      <div class="col-md-4"><div class="glass-card p-4 h-100 animate-fade-up delay-100" style="border-color:rgba(234,88,12,0.3);"><div style="font-size:2rem;mb:1rem;">📋</div><div style="background:linear-gradient(135deg,#f97316,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;" class="font-display fw-800 mb-2 mt-2">Command</div><p style="color:#64748b;font-size:0.875rem;">Encapsulates borrow and return as command objects with full validation and undo support.</p><code style="color:#c2410c;font-size:0.72rem;">BorrowCommand::execute()</code></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- FEATURES SECTION -->
+<section id="features" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-tag">✨ Features</div>
+      <h2 class="font-display fw-800" style="font-size:2.2rem;">Everything a Library Needs</h2>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-3 col-6"><div class="glass-card p-3 text-center h-100"><div style="font-size:2rem;">📚</div><div style="font-weight:600;font-size:0.9rem;margin-top:0.5rem;">Book Catalog</div><div class="text-muted-custom" style="font-size:0.78rem;">Search, filter & sort</div></div></div>
+      <div class="col-md-3 col-6"><div class="glass-card p-3 text-center h-100"><div style="font-size:2rem;">🔄</div><div style="font-weight:600;font-size:0.9rem;margin-top:0.5rem;">Borrow & Return</div><div class="text-muted-custom" style="font-size:0.78rem;">Role-based loan periods</div></div></div>
+      <div class="col-md-3 col-6"><div class="glass-card p-3 text-center h-100"><div style="font-size:2rem;">📖</div><div style="font-weight:600;font-size:0.9rem;margin-top:0.5rem;">E-books & Audio</div><div class="text-muted-custom" style="font-size:0.78rem;">Read or listen digitally</div></div></div>
+      <div class="col-md-3 col-6"><div class="glass-card p-3 text-center h-100"><div style="font-size:2rem;">💺</div><div style="font-weight:600;font-size:0.9rem;margin-top:0.5rem;">Seat Booking</div><div class="text-muted-custom" style="font-size:0.78rem;">Reserve reading seats</div></div></div>
+      <div class="col-md-3 col-6"><div class="glass-card p-3 text-center h-100"><div style="font-size:2rem;">⏳</div><div style="font-weight:600;font-size:0.9rem;margin-top:0.5rem;">Waitlist</div><div class="text-muted-custom" style="font-size:0.78rem;">Auto-notified via Observer</div></div></div>
+      <div class="col-md-3 col-6"><div class="glass-card p-3 text-center h-100"><div style="font-size:2rem;">💰</div><div style="font-weight:600;font-size:0.9rem;margin-top:0.5rem;">Fine Management</div><div class="text-muted-custom" style="font-size:0.78rem;">Auto late fee calculation</div></div></div>
+      <div class="col-md-3 col-6"><div class="glass-card p-3 text-center h-100"><div style="font-size:2rem;">🔔</div><div style="font-weight:600;font-size:0.9rem;margin-top:0.5rem;">Notifications</div><div class="text-muted-custom" style="font-size:0.78rem;">Real-time alerts</div></div></div>
+      <div class="col-md-3 col-6"><div class="glass-card p-3 text-center h-100"><div style="font-size:2rem;">👑</div><div style="font-weight:600;font-size:0.9rem;margin-top:0.5rem;">Admin Panel</div><div class="text-muted-custom" style="font-size:0.78rem;">Full system control</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- ROLES SECTION -->
+<section id="roles" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-tag">👥 User Roles</div>
+      <h2 class="font-display fw-800" style="font-size:2.2rem;">Three Role Dashboards</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4"><div class="glass-card glass-card-cyan p-4 h-100"><div style="font-size:2rem;mb:1rem;">🎓</div><h5 class="font-display fw-800 text-cyan mb-3 mt-2">Student</h5><ul style="color:#64748b;font-size:0.875rem;padding-left:1.25rem;line-height:2.2;"><li>Browse and search book catalog</li><li>Borrow &amp; return books</li><li>Read ebooks / listen audio</li><li>Upgrade membership tier</li><li>Book reading room seats</li><li>View notifications &amp; fines</li></ul></div></div>
+      <div class="col-md-4"><div class="glass-card glass-card-amber p-4 h-100"><div style="font-size:2rem;mb:1rem;">📋</div><h5 class="font-display fw-800 text-amber mb-3 mt-2">Librarian</h5><ul style="color:#64748b;font-size:0.875rem;padding-left:1.25rem;line-height:2.2;"><li>Add / edit / delete books</li><li>Manage book copies</li><li>Monitor all active borrows</li><li>Process student returns</li><li>View overdue reports</li><li>Send notifications to users</li></ul></div></div>
+      <div class="col-md-4"><div class="glass-card glass-card-purple p-4 h-100"><div style="font-size:2rem;mb:1rem;">⚙️</div><h5 class="font-display fw-800 mb-3 mt-2 text-purple">Admin</h5><ul style="color:#64748b;font-size:0.875rem;padding-left:1.25rem;line-height:2.2;"><li>Manage all users &amp; roles</li><li>Control membership plans</li><li>View system statistics</li><li>Approve book requests</li><li>Suspend/activate accounts</li><li>Full system settings</li></ul></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="glass-card glass-card-purple p-5 text-center">
+      <h2 class="font-display fw-800" style="font-size:2rem;">Ready to Explore?</h2>
+      <p class="text-muted-custom my-3">Use the demo accounts below — no setup required.</p>
+      <a href="/auth.html" class="btn-primary-gradient">🔐 Login Now</a>
+      <div class="d-flex flex-wrap gap-4 justify-content-center mt-4" style="font-size:0.82rem;color:#475569;">
+        <span>🎓 alice@student.edu / password123</span>
+        <span>📋 sarah@library.edu / password123</span>
+        <span>👑 admin@library.edu / password123</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer text-center">
+  <div class="container">
+    <p class="gradient-text font-display fw-800" style="font-size:1.1rem;">📚 SmartLibrary</p>
+    <p class="text-muted-custom mt-1">CSE327 Software Engineering — C++ Crow + SQLite + Bootstrap 5</p>
+    <p class="text-muted-custom mt-1" style="font-size:0.8rem;">Singleton · Factory · Strategy · Decorator · Observer · Command</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
